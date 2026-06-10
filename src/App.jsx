@@ -1,8 +1,11 @@
 const app = () => {
-  <main>
-    <h1 className="text-3xl font-bold">PokePack App</h1>
-    <p className="mt-4 text-lg">Gotta catch 'em all!</p>
-  </main>;
+
+  return (
+    <main className="w-screen h-screen flex items-center justify-center">
+      <h1 className="text-4xl font-bold">Pokémon Pack Simulator</h1>
+      <p className="text-lg">Get the cards you never got as a child</p>
+    </main>
+  );
 };
 
 export default app;
