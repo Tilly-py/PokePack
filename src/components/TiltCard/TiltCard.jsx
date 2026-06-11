@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-const OpenPackPage = ({ image, title = 'Poke Card' }) => {
+const TiltCard = ({ image, title = 'Poke Card' }) => {
   const cardRef = useRef(null);
   const [transform, setTransform] = useState('');
   const [glowPosition, setGlowPosition] = useState({
@@ -8,7 +8,7 @@ const OpenPackPage = ({ image, title = 'Poke Card' }) => {
     y: '-20%',
   });
 
-  function handleMouseMove(e) {
+  const handleMouseMove = (e) => {
     const card = cardRef.current;
     if (!card) return;
     const bounds = card.getBoundingClientRect();
@@ -79,4 +79,4 @@ const OpenPackPage = ({ image, title = 'Poke Card' }) => {
   );
 };
 
-export default OpenPackPage;
+export default TiltCard;
