@@ -20,18 +20,15 @@ const isCommon = (card) => {
 };
 
 const isUncommon = (card) => {
-  const cardNumber = getCardNumber(card);
-  return card.rarity === 'Uncommon' || (cardNumber >= 17 && cardNumber <= 95);
+  return card.rarity === 'Uncommon';
 };
 
 const isHoloRare = (card) => {
-  const cardNumber = getCardNumber(card);
-  return card.rarity === 'Rare Holo' || (cardNumber >= 1 && cardNumber <= 16);
+  return card.rarity === 'Rare Holo';
 };
 
 const isNonHoloRare = (card) => {
-  const cardNumber = getCardNumber(card);
-  return card.rarity === 'Rare' || (cardNumber >= 17 && cardNumber <= 95);
+  return card.rarity === 'Rare';
 };
 
 export const generateBaseSetPack = (cards) => {
