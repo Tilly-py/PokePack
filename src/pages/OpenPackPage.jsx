@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import TiltCard from '../components/TiltCard/TiltCard';
 import { getCardsBySet } from '../api/pokemonTcgApi';
+import { generateBaseSetPack } from '../utils/packGenerator';
 
 const OpenPackPage = () => {
-  const demoCardImage = 'https://images.pokemontcg.io/base1/1_hires.png';
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
+  const [openedPack, setOpenedPack] = useState([]);
 
   useEffect(() => {
     const loadCards = async () => {
@@ -26,7 +27,11 @@ const OpenPackPage = () => {
 
     loadCards();
   }, []);
-  const previewCard = cards[0];
+  const handleOpenPack = () => {
+    const newPack = generateBaseSetPack(cards);
+    setOpenedPack(newPack);
+  };
+  const rareCard = openedPack[openedPack.length - 1];
   return (
     <section className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center justify-center gap-6 text-center">
       <p className="mb-3 text-sm font-semibold tracking-[0.3em] text-yellow-400">
@@ -43,9 +48,18 @@ const OpenPackPage = () => {
 
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       </div>
-      {previewCard && (
+      <button
+        type="button"
+        onClick={handleOpenPack}
+        disabled={isLoading || Boolean(errorMessage)}
+        className="rounded-xl bg-yellow-400 px-6 py-3 font-bold text-zinc-950 transition hover:bg-yellow-300"
+      >
+        Open Pack
+      </button>
+
+      {rareCard && (
         <div className="mt-10">
-          <TiltCard image={previewCard.images.large} title={previewCard.name} />
+          <TiltCard image={rareCard.images.large} title={rareCard.name} />
         </div>
       )}
     </section>
