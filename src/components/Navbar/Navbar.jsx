@@ -17,22 +17,24 @@ const NavIcons = [
     label: 'Collection',
     icon: Archive,
   },
-  {
-    path: '/about',
-    label: 'About',
-    icon: Info,
-  },
 ];
 
 const Navbar = () => {
   return (
-    <header className="border-b border-zinc-800 bg-zinc-950/90 backdrop-blur">
-      <nav className="flex items-center border mx-4 max-md:w-full max-md:justify-between border-slate-700 px-6 py-4 rounded-full text-white text-sm">
+    <header className="bg-zinc-950/90 backdrop-blur sticky top-0 z-50">
+      <nav
+        className="sticky mx-auto flex w-full max-w-3xl items-center justify-between gap-3
+          rounded-full border border-white/20 bg-blue-zinc-900/25 p-2
+          shadow-[0_10px_30px_rgba(0,0,0,0.18)]
+          backdrop-blur-xl backdrop-saturate-150
+          after:pointer-events-none after:absolute after:inset-0 after:rounded-full
+          after:shadow-[inset_2px_2px_5px_-2px_rgba(255,255,255,0.45),inset_-2px_-2px_5px_2px_rgba(255,255,255,0.18),inset_0_-2px_0_rgba(255,255,255,0.16)]"
+      >
         <NavLink to="/" className="text-lg font-black tracking-tight text-yellow-400">
           <img
             src="./src/assets/pokeball.svg"
             alt="Pokeball"
-            className="inline-block w-6 h-6 mr-2"
+            className="inline-block w-12 h-12 mr-2 bg-amber-300 rounded-full p-1"
           />
           PokePack
         </NavLink>
