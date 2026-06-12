@@ -4,6 +4,7 @@ import { getCardsBySet } from '../api/pokemonTcgApi';
 import { generateBaseSetPack } from '../utils/packGenerator';
 import OpenedPackTray from '../components/OpenedPackTray/OpenedPackTray';
 import CardModal from '../components/CardModal/CardModal';
+import { getSleevedCards, saveSleevedCard } from '../utils/sleeveStorage';
 
 const OpenPackPage = () => {
   const [cards, setCards] = useState([]);
@@ -12,6 +13,7 @@ const OpenPackPage = () => {
   const [openedPack, setOpenedPack] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [sleevedCards, setSleevedCards] = useState([]);
   useEffect(() => {
     const loadCards = async () => {
       try {
@@ -30,20 +32,36 @@ const OpenPackPage = () => {
 
     loadCards();
   }, []);
+
+  useEffect(() => {
+    const storedSleevedCards = getSleevedCards();
+    setSleevedCards(storedSleevedCards);
+  }, []);
+  const handleSleeveCard = (card) => {
+    const updatedSleevedCards = saveSleevedCard(card);
+    setSleevedCards(updatedSleevedCards);
+  };
+  const isSelectedCardSleeved = sleevedCards.some((sleevedCard) => {
+    return sleevedCard.id === selectedCard?.id;
+  });
   const handleOpenPack = () => {
     const newPack = generateBaseSetPack(cards);
     setOpenedPack(newPack);
     setCurrentCardIndex(0);
   };
+
   const handleNextCard = () => {
     setCurrentCardIndex((prevIndex) => prevIndex + 1);
   };
+
   const handleSelectedCard = (card) => {
     setSelectedCard(card);
   };
+
   const handleCloseModal = () => {
     setSelectedCard(null);
   };
+
   const currentCard = openedPack[currentCardIndex];
   const hasOpenedPack = openedPack.length > 0;
   const isLastCard = currentCardIndex === openedPack.length - 1;
@@ -56,7 +74,6 @@ const OpenPackPage = () => {
       <h1 className="text-5xl font-bold tracking-tight text-white sm:text-7xl">
         Open A Base Set Booster Pack!
       </h1>
-
       <p className="mt-6 max-w-2xl text-lg text-gray-400">
         Reveal cards one by one, and sleeve your favorites to keep them safe!
       </p>
@@ -120,7 +137,14 @@ const OpenPackPage = () => {
           </div>
         </div>
       )}
-      {selectedCard && <CardModal card={selectedCard} onClose={handleCloseModal} />}
+      {selectedCard && (
+        <CardModal
+          card={selectedCard}
+          onClose={handleCloseModal}
+          onSleeveCard={handleSleeveCard}
+          isSleeved={isSelectedCardSleeved}
+        />
+      )}
     </section>
   );
 };

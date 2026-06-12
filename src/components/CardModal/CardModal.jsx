@@ -1,12 +1,15 @@
 import { X } from 'lucide-react';
 import TiltCard from '../TiltCard/TiltCard';
-const CardModal = ({ card, onClose }) => {
+import { getCardPrice, formatUsdPrice } from '../../utils/cardPrice';
+
+const CardModal = ({ card, onClose, onSleeveCard, isSleeved }) => {
+  const price = getCardPrice(card);
   return (
     <div
       className="fixed inset-0 z-50 flex items-center
-        justify-center bg-black/80 px-6"
+        justify-center bg-black/80 px-6 min-h-screen"
     >
-      <div className="relative w-full max-w-4xl rounded-3xl border border-zinc-700 p-6 shadow-2xl">
+      <div className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-zinc-700 bg-zinc-950 p-6 shadow-2xl">
         <button
           type="button"
           onClick={onClose}
@@ -15,9 +18,12 @@ const CardModal = ({ card, onClose }) => {
         >
           <X size={20} />
         </button>
-        <div className="grid gap-8 md:grid-cols-[320px_1fr">
-          <TiltCard image={card.images.large} />
-
+        <div className="grid gap-8 md:grid-cols-[320px_1fr]">
+          <img
+            src={card.images.large}
+            alt={card.name}
+            className="mx-auto max-h-[420px] w-auto rounded-xl"
+          />
           <div className="flex flex-col justify-center text-left">
             <p className="text-sm font-bold tracking-[0.25em] text-yellow-400">
               {card.rarity || 'Unknown rarity'}
@@ -32,7 +38,17 @@ const CardModal = ({ card, onClose }) => {
               <p className="mt-1 font-bold text-zinc-100">
                 {card.number}/{card.set.printedTotal}
               </p>
+              <p className="mt-4 text-sm text-zinc-400">Market Price</p>
+              <p className="mt-1 font-bold text-zinc-100">{formatUsdPrice(price)}</p>
             </div>
+            <button
+              type="button"
+              onClick={() => onSleeveCard(card)}
+              disabled={isSleeved}
+              className="mt-6 rounded-xl bg-yellow-400 px-6 py-3 font-bold text-zinc-950 transition hover:bg-yellow-300 disabled:cursor-default disabled:bg-yellow-400/50 disabled:text-zinc-500"
+            >
+              {isSleeved ? 'Card Sleeved' : 'Sleeve Card'}
+            </button>
           </div>
         </div>
       </div>
