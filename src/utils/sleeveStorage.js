@@ -9,7 +9,7 @@ export const getSleevedCards = () => {
   return JSON.parse(storedCards);
 };
 
-export const saveSleevedCards = (card) => {
+export const saveSleevedCard = (card) => {
   const sleevedCards = getSleevedCards();
   const alreadySleeved = sleevedCards.some((sleevedCard) => {
     return sleevedCard.id === card.id;
