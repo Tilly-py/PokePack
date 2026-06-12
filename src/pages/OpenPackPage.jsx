@@ -3,6 +3,7 @@ import TiltCard from '../components/TiltCard/TiltCard';
 import { getCardsBySet } from '../api/pokemonTcgApi';
 import { generateBaseSetPack } from '../utils/packGenerator';
 import OpenedPackTray from '../components/OpenedPackTray/OpenedPackTray';
+import CardModal from '../components/CardModal/CardModal';
 
 const OpenPackPage = () => {
   const [cards, setCards] = useState([]);
@@ -10,7 +11,7 @@ const OpenPackPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [openedPack, setOpenedPack] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-
+  const [selectedCard, setSelectedCard] = useState(null);
   useEffect(() => {
     const loadCards = async () => {
       try {
@@ -36,6 +37,12 @@ const OpenPackPage = () => {
   };
   const handleNextCard = () => {
     setCurrentCardIndex((prevIndex) => prevIndex + 1);
+  };
+  const handleSelectedCard = (card) => {
+    setSelectedCard(card);
+  };
+  const handleCloseModal = () => {
+    setSelectedCard(null);
   };
   const currentCard = openedPack[currentCardIndex];
   const hasOpenedPack = openedPack.length > 0;
@@ -70,7 +77,7 @@ const OpenPackPage = () => {
       )}
       {hasOpenedPack && (
         <div className="mt-10 grid w-full max-w-6xl gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
-          <OpenedPackTray cards={revealedCards} />
+          <OpenedPackTray cards={revealedCards} onCardClick={handleSelectedCard} />
           <div className="flex min-w-0 flex-col items-center gap-4">
             {currentCard && (
               <>
@@ -113,6 +120,7 @@ const OpenPackPage = () => {
           </div>
         </div>
       )}
+      {selectedCard && <CardModal card={selectedCard} onClose={handleCloseModal} />}
     </section>
   );
 };
