@@ -1,4 +1,4 @@
-const OpenedPackTray = ({ cards }) => {
+const OpenedPackTray = ({ cards, onCardClick }) => {
   return (
     <div className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/70 p-4 lg:w-60">
       <h2 className="text-lg font-bold text-zinc-100">Opened Cards</h2>
@@ -10,6 +10,7 @@ const OpenedPackTray = ({ cards }) => {
             <button
               key={index}
               type="button"
+              onClick={() => card && onCardClick(card)}
               disabled={!card}
               className="aspect-63/88 overflow-hidden rounded-md border border-zinc-700 bg-zinc-950 transition hover:border-yelow-400 disabled:cursor-default disabled:opacity-40"
             >
