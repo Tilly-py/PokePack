@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import TiltCard from '../components/TiltCard/TiltCard';
 import { getCardsBySet } from '../api/pokemonTcgApi';
 import { generateBaseSetPack } from '../utils/packGenerator';
@@ -8,6 +9,8 @@ import { getSleevedCards, saveSleevedCard } from '../utils/sleeveStorage';
 import LoadingScreen from '../components/LoadingScreen/LoadingScreen';
 import BaseSetOne from '../assets/BaseSet.png';
 import cardBackImage from '../assets/pokemon-card-back.png';
+import BoosterPackButton from '../components/BoosterPackButton/BoosterPackButton';
+import CardBackReveal from '../components/CardBackReveal/CardBackReveal';
 
 const OpenPackPage = () => {
   const [cards, setCards] = useState([]);
@@ -93,22 +96,12 @@ const OpenPackPage = () => {
       {isLoading && <LoadingScreen />}
 
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-      {!hasOpenedPack && (
-        <button
-          type="button"
-          onClick={handleOpenPack}
+      {!isLoading && !hasOpenedPack && !errorMessage && (
+        <BoosterPackButton
+          image={BaseSetOne}
+          onOpenPack={handleOpenPack}
           disabled={isLoading || Boolean(errorMessage) || cards.length === 0}
-          className="rounded-xl px-6 py-3 font-bold text-zinc-950 transition"
-        >
-          <img
-            src={BaseSetOne}
-            alt="Base Set Booster Pack"
-            className="h-[600px] w-[430px] rounded-lg drop-shadow-2xl transition duration-300 group-hover:-translate-y-2 group-hover:scale-105"
-          />
-          <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-5 py-2 text-sm font-bold uppercase tracking-[0.25em] text-yellow-300 mt-4">
-            Open Pack
-          </span>
-        </button>
+        />
       )}
       {hasOpenedPack && (
         <div className="mt-10 grid w-full max-w-6xl gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
@@ -126,52 +119,50 @@ const OpenPackPage = () => {
 
                   <p className="mt-1 text-sm text-zinc-500">{currentCard.supertype}</p>
                 </div>
-                {!isCardRevealed ? (
-                  <>
-                    <button
-                      type="button"
-                      onClick={handleRevealCard}
-                      className="group mt-4 flex flex-col items-center gap-4"
+                <AnimatePresence mode="wait">
+                  {!isCardRevealed ? (
+                    <CardBackReveal
+                      key={`card-back-${currentCardIndex}`}
+                      image={cardBackImage}
+                      onRevealCard={handleRevealCard}
+                      cardIndex={currentCardIndex}
+                    />
+                  ) : (
+                    <motion.div
+                      key={currentCard.id}
+                      initial={{ opacity: 0, scale: 0.9, rotateY: -20 }}
+                      animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                      transition={{ duration: 0.8, ease: 'easeOut' }}
                     >
-                      <img
-                        src={cardBackImage}
-                        alt="Card Back"
-                        className="h-[600px] w-[430px] drop-shadow-2xl transition duration-300 group-hover:-translate-y-2 group-hover:scale-105"
-                      />
-                      <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-5 py-2 text-sm font-bold uppercase tracking-[0.25em] text-yellow-300 mt-4">
-                        Reveal Card
-                      </span>
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <TiltCard image={currentCard.images.large} />
-                    {!isLastCard && (
-                      <button
-                        type="button"
-                        onClick={handleNextCard}
-                        className="mt-4 rounded-xl bg-yellow-400 px-6 py-3 font-bold text-zinc-950 transition hover:bg-yellow-300"
-                      >
-                        Next Card
-                      </button>
-                    )}
-                    {isLastCard && (
-                      <div className="flex flex-col items-center gap-3">
-                        <p className="rounded-xl border border-yellow-400/30 bg-yellow-400/10 px-5 py-3 font-semibold text-yellow-300">
-                          Pack Fully Opened! Sleeve your favorites and share your pulls with
-                          friends!
-                        </p>
+                      <TiltCard image={currentCard.images.large} />
+                      {!isLastCard && (
                         <button
                           type="button"
-                          onClick={handleOpenPack}
-                          className="rounded-xl bg-yellow-400 px-6 py-3 font-bold text-zinc-950 transition hover:bg-yellow-300"
+                          onClick={handleNextCard}
+                          className="mt-4 rounded-xl bg-yellow-400 px-6 py-3 font-bold text-zinc-950 transition hover:bg-yellow-300"
                         >
-                          Open Another Pack
+                          Next Card
                         </button>
-                      </div>
-                    )}
-                  </>
-                )}
+                      )}
+
+                      {isLastCard && (
+                        <div className="flex flex-col items-center gap-3">
+                          <p className="rounded-xl border border-yellow-400/30 bg-yellow-400/10 px-5 py-3 font-semibold text-yellow-300">
+                            Pack Fully Opened! Sleeve your favorites and share your pulls with
+                            friends!
+                          </p>
+                          <button
+                            type="button"
+                            onClick={handleOpenPack}
+                            className="rounded-xl bg-yellow-400 px-6 py-3 font-bold text-zinc-950 transition hover:bg-yellow-300"
+                          >
+                            Open Another Pack
+                          </button>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </>
             )}
           </div>
