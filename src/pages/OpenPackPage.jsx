@@ -5,6 +5,7 @@ import { generateBaseSetPack } from '../utils/packGenerator';
 import OpenedPackTray from '../components/OpenedPackTray/OpenedPackTray';
 import CardModal from '../components/CardModal/CardModal';
 import { getSleevedCards, saveSleevedCard } from '../utils/sleeveStorage';
+import LoadingScreen from '../components/LoadingScreen/LoadingScreen';
 
 const OpenPackPage = () => {
   const [cards, setCards] = useState([]);
@@ -21,7 +22,6 @@ const OpenPackPage = () => {
         setErrorMessage('');
 
         const baseSetCards = await getCardsBySet('base1');
-        console.log(baseSetCards);
         setCards(baseSetCards);
       } catch (error) {
         setErrorMessage(error.message);
@@ -77,11 +77,9 @@ const OpenPackPage = () => {
       <p className="mt-6 max-w-2xl text-lg text-gray-400">
         Reveal cards one by one, and sleeve your favorites to keep them safe!
       </p>
-      <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-900 px-5 py-4 text-sm text-zinc-300">
-        {isLoading && <p>Loading...</p>}
+      {isLoading && <LoadingScreen />}
 
-        {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-      </div>
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       {!hasOpenedPack && (
         <button
           type="button"
