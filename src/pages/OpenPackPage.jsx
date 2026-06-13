@@ -134,6 +134,7 @@ const OpenPackPage = () => {
                       image={cardBackImage}
                       onRevealCard={handleRevealCard}
                       cardIndex={currentCardIndex}
+                      rarity={currentCard.rarity}
                     />
                   ) : (
                     <motion.div
