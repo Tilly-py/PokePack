@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import TiltCard from '../components/TiltCard/TiltCard';
 import { getCardsBySet } from '../api/pokemonTcgApi';
 import { generateBaseSetPack } from '../utils/packGenerator';
@@ -6,6 +7,10 @@ import OpenedPackTray from '../components/OpenedPackTray/OpenedPackTray';
 import CardModal from '../components/CardModal/CardModal';
 import { getSleevedCards, saveSleevedCard } from '../utils/sleeveStorage';
 import LoadingScreen from '../components/LoadingScreen/LoadingScreen';
+import BaseSetOne from '../assets/BaseSet.png';
+import cardBackImage from '../assets/pokemon-card-back.png';
+import BoosterPackButton from '../components/BoosterPackButton/BoosterPackButton';
+import CardBackReveal from '../components/CardBackReveal/CardBackReveal';
 
 const OpenPackPage = () => {
   const [cards, setCards] = useState([]);
@@ -15,6 +20,8 @@ const OpenPackPage = () => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [selectedCard, setSelectedCard] = useState(null);
   const [sleevedCards, setSleevedCards] = useState([]);
+  const [isCardRevealed, setIsCardRevealed] = useState(false);
+
   useEffect(() => {
     const loadCards = async () => {
       try {
@@ -46,12 +53,19 @@ const OpenPackPage = () => {
   });
   const handleOpenPack = () => {
     const newPack = generateBaseSetPack(cards);
+
     setOpenedPack(newPack);
     setCurrentCardIndex(0);
+    setIsCardRevealed(false);
+  };
+
+  const handleRevealCard = () => {
+    setIsCardRevealed(true);
   };
 
   const handleNextCard = () => {
     setCurrentCardIndex((prevIndex) => prevIndex + 1);
+    setIsCardRevealed(false);
   };
 
   const handleSelectedCard = (card) => {
@@ -65,7 +79,9 @@ const OpenPackPage = () => {
   const currentCard = openedPack[currentCardIndex];
   const hasOpenedPack = openedPack.length > 0;
   const isLastCard = currentCardIndex === openedPack.length - 1;
-  const revealedCards = openedPack.slice(0, currentCardIndex);
+  const revealedCards = isCardRevealed
+    ? openedPack.slice(0, currentCardIndex + 1)
+    : openedPack.slice(0, currentCardIndex);
   return (
     <section className="mx-auto flex min-h-screen w-full flex-col items-center justify-start gap-6 px-6 py-16 text-center">
       <p className="mb-3 text-sm font-semibold tracking-[0.3em] text-yellow-400">
@@ -80,15 +96,12 @@ const OpenPackPage = () => {
       {isLoading && <LoadingScreen />}
 
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-      {!hasOpenedPack && (
-        <button
-          type="button"
-          onClick={handleOpenPack}
+      {!isLoading && !hasOpenedPack && !errorMessage && (
+        <BoosterPackButton
+          image={BaseSetOne}
+          onOpenPack={handleOpenPack}
           disabled={isLoading || Boolean(errorMessage) || cards.length === 0}
-          className="rounded-xl bg-yellow-400 px-6 py-3 font-bold text-zinc-950 transition hover:bg-yellow-300"
-        >
-          Open Pack
-        </button>
+        />
       )}
       {hasOpenedPack && (
         <div className="mt-10 grid w-full max-w-6xl gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
@@ -97,39 +110,68 @@ const OpenPackPage = () => {
             {currentCard && (
               <>
                 <div>
-                  <h2 className="text-2xl font-bold text-zinc-100">
-                    {currentCard.rarity || 'Unknown rarity'} - {currentCard.name}
-                  </h2>
+                  {isCardRevealed ? (
+                    <>
+                      <h2 className="text-2xl font-bold text-zinc-100">
+                        {currentCard.rarity || 'Unknown rarity'} - {currentCard.name}
+                      </h2>
+                      <p className="mt-1 text-sm font-semibold text-zinc-400">
+                        {currentCard.supertype}
+                      </p>
+                    </>
+                  ) : (
+                    <h2 className="text-2xl font-bold text-zinc-100">Card Ready to Reveal!</h2>
+                  )}
+
                   <p className="mt-1 text-sm font-semibold text-zinc-400">
                     Card {currentCardIndex + 1} of {openedPack.length}
                   </p>
-
-                  <p className="mt-1 text-sm text-zinc-500">{currentCard.supertype}</p>
                 </div>
-                <TiltCard image={currentCard.images.large} />
-                {!isLastCard && (
-                  <button
-                    type="button"
-                    onClick={handleNextCard}
-                    className="mt-4 rounded-xl bg-yellow-400 px-6 py-3 font-bold text-zinc-950 transition hover:bg-yellow-300"
-                  >
-                    Next Card
-                  </button>
-                )}
-                {isLastCard && (
-                  <div className="flex flex-col items-center gap-3">
-                    <p className="rounded-xl border border-yellow-400/30 bg-yellow-400/10 px-5 py-3 font-semibold text-yellow-300">
-                      Pack Fully Opened! Sleeve your favorites and share your pulls with friends!
-                    </p>
-                    <button
-                      type="button"
-                      onClick={handleOpenPack}
-                      className="rounded-xl bg-yellow-400 px-6 py-3 font-bold text-zinc-950 transition hover:bg-yellow-300"
+                <AnimatePresence mode="wait">
+                  {!isCardRevealed ? (
+                    <CardBackReveal
+                      key={`card-back-${currentCardIndex}`}
+                      image={cardBackImage}
+                      onRevealCard={handleRevealCard}
+                      cardIndex={currentCardIndex}
+                    />
+                  ) : (
+                    <motion.div
+                      key={`revealed-card-${currentCard.id}`}
+                      initial={{ opacity: 0, scale: 0.9, rotateY: -20 }}
+                      animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                      transition={{ duration: 0.8, ease: 'easeOut' }}
+                      exit={{ opacity: 0, scale: 0.9, rotateY: 20 }}
                     >
-                      Open Another Pack
-                    </button>
-                  </div>
-                )}
+                      <TiltCard image={currentCard.images.large} />
+                      {!isLastCard && (
+                        <button
+                          type="button"
+                          onClick={handleNextCard}
+                          className="mt-4 rounded-xl bg-yellow-400 px-6 py-3 font-bold text-zinc-950 transition hover:bg-yellow-300"
+                        >
+                          Next Card
+                        </button>
+                      )}
+
+                      {isLastCard && (
+                        <div className="flex flex-col items-center gap-3">
+                          <p className="rounded-xl border border-yellow-400/30 bg-yellow-400/10 px-5 py-3 font-semibold text-yellow-300">
+                            Pack Fully Opened! Sleeve your favorites and share your pulls with
+                            friends!
+                          </p>
+                          <button
+                            type="button"
+                            onClick={handleOpenPack}
+                            className="rounded-xl bg-yellow-400 px-6 py-3 font-bold text-zinc-950 transition hover:bg-yellow-300"
+                          >
+                            Open Another Pack
+                          </button>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </>
             )}
           </div>
