@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Sparkles, Archive, Info, Home } from 'lucide-react';
+import { Sparkles, Archive, Home } from 'lucide-react';
 
 const NavIcons = [
   {
