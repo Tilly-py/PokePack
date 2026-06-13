@@ -110,14 +110,22 @@ const OpenPackPage = () => {
             {currentCard && (
               <>
                 <div>
-                  <h2 className="text-2xl font-bold text-zinc-100">
-                    {currentCard.rarity || 'Unknown rarity'} - {currentCard.name}
-                  </h2>
+                  {isCardRevealed ? (
+                    <>
+                      <h2 className="text-2xl font-bold text-zinc-100">
+                        {currentCard.rarity || 'Unknown rarity'} - {currentCard.name}
+                      </h2>
+                      <p className="mt-1 text-sm font-semibold text-zinc-400">
+                        {currentCard.supertype}
+                      </p>
+                    </>
+                  ) : (
+                    <h2 className="text-2xl font-bold text-zinc-100">Card Ready to Reveal!</h2>
+                  )}
+
                   <p className="mt-1 text-sm font-semibold text-zinc-400">
                     Card {currentCardIndex + 1} of {openedPack.length}
                   </p>
-
-                  <p className="mt-1 text-sm text-zinc-500">{currentCard.supertype}</p>
                 </div>
                 <AnimatePresence mode="wait">
                   {!isCardRevealed ? (
@@ -129,10 +137,11 @@ const OpenPackPage = () => {
                     />
                   ) : (
                     <motion.div
-                      key={currentCard.id}
+                      key={`revealed-card-${currentCard.id}`}
                       initial={{ opacity: 0, scale: 0.9, rotateY: -20 }}
                       animate={{ opacity: 1, scale: 1, rotateY: 0 }}
                       transition={{ duration: 0.8, ease: 'easeOut' }}
+                      exit={{ opacity: 0, scale: 0.9, rotateY: 20 }}
                     >
                       <TiltCard image={currentCard.images.large} />
                       {!isLastCard && (
