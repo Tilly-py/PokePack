@@ -21,24 +21,6 @@ body {
   position: relative;
 }
 
-.circleMiddle {
-  background-color: #18181b;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  z-index: 99;
-}
-
-.worm {
-  position: absolute;
-  width: 10px;
-  height: 105px;
-  background-color: #ffffff;
-  border-radius: 5px;
-  animation: pokeShadow 4s linear infinite;
-  z-index: 80;
-}
-
 @keyframes pokeLoading {
   0%,
   100% {
