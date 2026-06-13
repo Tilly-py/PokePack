@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-const TiltCard = ({ image, title = 'Poke Card' }) => {
+const TiltCard = ({ image = 'Poke Card' }) => {
   const cardRef = useRef(null);
   const [transform, setTransform] = useState('');
   const [glowPosition, setGlowPosition] = useState({
@@ -34,7 +34,7 @@ const TiltCard = ({ image, title = 'Poke Card' }) => {
       x: `${centerX * 2 + bounds.width / 2}px`,
       y: `${centerY * 2 + bounds.height / 2}px`,
     });
-  }
+  };
 
   function handleMouseLeave() {
     setTransform('');
@@ -73,7 +73,6 @@ const TiltCard = ({ image, title = 'Poke Card' }) => {
             `,
           }}
         />
-        <div className="relative z-10 p-4 text-right font-bold text-white drop-shadow">{title}</div>
       </div>
     </section>
   );
