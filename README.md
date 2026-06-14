@@ -115,7 +115,7 @@ Open the local dev URL shown in the terminal or type:
 │   │   ├── BaseSet.png
 │   │   ├── BaseSetOne.png
 │   │   ├── pokeball.svg
-│   │   ├── pokemon-card-back.png
+│   │   └── pokemon-card-back.png
 │   ├── components
 │   │   ├── BoosterPackButton
 │   │   │   └── BoosterPackButton.jsx
@@ -133,7 +133,6 @@ Open the local dev URL shown in the terminal or type:
 │   │   │   └── RevealedCardDisplay.jsx
 │   │   └── TiltCard
 │   │       └── TiltCard.jsx
-│   ├── data
 │   ├── index.css
 │   ├── main.jsx
 │   ├── pages
