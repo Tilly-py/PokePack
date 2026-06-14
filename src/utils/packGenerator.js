@@ -1,9 +1,5 @@
 const HOLO_RARE_PULL_RATE = 0.33;
 
-const getCardNumber = (card) => {
-  return Number(card.number);
-};
-
 const getRandomCards = (cards, amount) => {
   const shuffledCards = [...cards].sort(() => Math.random() - 0.5);
   return shuffledCards.slice(0, amount);
@@ -15,8 +11,7 @@ const getRandomCard = (cards) => {
 };
 
 const isCommon = (card) => {
-  const cardNumber = getCardNumber(card);
-  return card.rarity === 'Common' || cardNumber <= 96;
+  return card.rarity === 'Common';
 };
 
 const isUncommon = (card) => {
@@ -40,6 +35,9 @@ export const generateBaseSetPack = (cards) => {
   const shouldPullHoloRare = Math.random() < HOLO_RARE_PULL_RATE;
 
   const rareCard = shouldPullHoloRare ? getRandomCard(holoRares) : getRandomCard(nonHoloRares);
+  const normalCards = [...getRandomCards(commons, 6), ...getRandomCards(uncommons, 3)];
 
-  return [...getRandomCards(commons, 6), ...getRandomCards(uncommons, 3), rareCard];
+  const shuffleNormalCards = getRandomCards(normalCards, normalCards.length);
+
+  return [...shuffleNormalCards, rareCard];
 };
