@@ -48,7 +48,7 @@ const TiltCard = ({ image, onClick, isClickable = true }) => {
     <section className="mx-auto max-w-6xl px-6 py-10 flex items-center justify-center">
       <button
         type="button"
-        onClick={isClickable ? onClick: undefined}
+        onClick={isClickable ? onClick : undefined}
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -56,7 +56,7 @@ const TiltCard = ({ image, onClick, isClickable = true }) => {
           relative h-[600px] w-[430px] rounded-xl
           bg-cover bg-center shadow-lg
           transition-[transform,box-shadow] duration-300 ease-out
-          hover:shadow-2xl
+          hover:shadow-2xl cursor-pointer
         "
         style={{
           backgroundImage: `url(${image})`,

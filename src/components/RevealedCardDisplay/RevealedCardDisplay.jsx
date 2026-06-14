@@ -11,15 +11,6 @@ const RevealedCardDisplay = ({ card, isLastCard, onNextCard, onOpenPack }) => {
       exit={{ opacity: 0, scale: 0.9, rotateY: 20 }}
     >
       <TiltCard image={card.images.large} onClick={isLastCard ? onOpenPack: onNextCard}/>
-      {!isLastCard && (
-        <button
-          type="button"
-          onClick={isLastCard ? onOpenPack : onNextCard}
-          className="mt-4 rounded-xl bg-yellow-400 px-6 py-3 font-bold text-zinc-950 transition hover:bg-yellow-300"
-        >
-          Next Card
-        </button>
-      )}
 
       {isLastCard && (
         <div className="flex flex-col items-center gap-3">
