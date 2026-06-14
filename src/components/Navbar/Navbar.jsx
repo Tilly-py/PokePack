@@ -23,14 +23,15 @@ const Navbar = () => {
   return (
     <header className="bg-zinc-950/90 backdrop-blur sticky top-0 z-50">
       <nav
-        className="sticky mx-auto flex w-full max-w-3xl items-center justify-between gap-3
+        className="sticky mx-auto flex w-full max-w-3xl items-center justify-center gap-3
           rounded-full border border-white/20 bg-blue-zinc-900/25 p-2
           shadow-[0_10px_30px_rgba(0,0,0,0.18)]
           backdrop-blur-xl backdrop-saturate-150
+          sm:justify-between
           after:pointer-events-none after:absolute after:inset-0 after:rounded-full
           after:shadow-[inset_2px_2px_5px_-2px_rgba(255,255,255,0.45),inset_-2px_-2px_5px_2px_rgba(255,255,255,0.18),inset_0_-2px_0_rgba(255,255,255,0.16)]"
       >
-        <NavLink to="/" className="text-lg font-black tracking-tight text-yellow-400">
+        <NavLink to="/" className="relative text-lg font-black tracking-tight text-yellow-400">
           <img
             src="./src/assets/pokeball.svg"
             alt="Pokeball"
@@ -39,7 +40,7 @@ const Navbar = () => {
           PokePack
         </NavLink>
 
-        <div className="flex items-center gap-2 mr-0.5">
+        <div className="flex items-center justify-center gap-2  sm:justify-end">
           {NavIcons.map((link) => {
             const Icon = link.icon;
             return (
@@ -54,7 +55,7 @@ const Navbar = () => {
                   }`
                 }
               >
-                <Icon className="h-6 w-6 sm:h-2 sm:w-2" />
+                <Icon className="h-7 w-7  sm:h-4 sm:w-4" />
                 <span className="hidden sm:inline">{link.label}</span>
               </NavLink>
             );
