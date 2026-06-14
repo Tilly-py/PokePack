@@ -16,11 +16,8 @@ const BoosterPackButton = ({ image, onOpenPack, disabled }) => {
       <img
         src={image}
         alt="Base Set Booster Pack"
-        className="h-[600px] w-[430px] rounded-lg drop-shadow-2xl transition duration-300 group-hover:-translate-y-2 group-hover:scale-105"
+        className="h-[600px] w-[430px] rounded-lg drop-shadow-2xl transition duration-300 group-hover:-translate-y-2 group-hover:scale-105 cursor-pointer"
       />
-      <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-5 py-2 text-sm font-bold uppercase tracking-[0.25em] text-yellow-300 mt-4">
-        Open Pack
-      </span>
     </motion.button>
   );
 };

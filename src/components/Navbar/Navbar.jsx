@@ -39,7 +39,7 @@ const Navbar = () => {
           PokePack
         </NavLink>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mr-0.5">
           {NavIcons.map((link) => {
             const Icon = link.icon;
             return (
@@ -49,7 +49,7 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition ${
                     isActive
-                      ? 'bg-yellow-400 text-zinc-950'
+                      ? 'bg-yellow-400 text-zinc-950 rounded-xl'
                       : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100'
                   }`
                 }
