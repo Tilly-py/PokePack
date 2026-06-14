@@ -1,3 +1,5 @@
+![PokePack Banner](./src/assets/retro.png)
+
 # PokePack
 
 PokePack is React application where a user can simulate the pack opening of the base set Pokémon cards from 1999. The cards are revealed one by one, ranging from common --> rare holo cards. These can later be _sleeved_ (saved) in the collection page where the price of the cards is displayed.
