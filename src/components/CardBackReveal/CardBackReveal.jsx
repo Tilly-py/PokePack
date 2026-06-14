@@ -41,7 +41,7 @@ const CardBackReveal = ({ image, onRevealCard, cardIndex, rarity }) => {
       <img
         src={image}
         alt="Card Back"
-        className={`h-[600px] w-[430px] drop-shadow-2xl transition duration-300 group-hover:-translate-y-2 cursor-pointer group-hover:scale-105 ${glowClass} ${borderClass} ${rarityAnimationClass} rounded-lg`}
+        className={`h-[600px] w-[430px] drop-shadow-2xl transition duration-300 group-hover:-translate-y-2 cursor-pointer group-hover:scale-105 ${glowClass} ${borderClass} ${rarityAnimationClass}`}
       />
     </motion.button>
   );
