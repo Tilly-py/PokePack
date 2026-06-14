@@ -1,4 +1,4 @@
-![PokePack Banner](./src/assets/retro.png)
+![PokePack Banner](./src/assets/Retro.png)
 
 # PokePack
 
