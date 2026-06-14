@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { getSleevedCards, removeSleevedCard } from '../utils/sleeveStorage';
 import { formatUsdPrice, getCardPrice } from '../utils/cardPrice';
+import CardModal from '../components/CardModal/CardModal';
 
 const CollectionPage = () => {
   const [sleevedCards, setSleevedCards] = useState([]);
+  const [selectedCard, setSelectedCard] = useState(null);
 
   useEffect(() => {
     const storedSleevedCards = getSleevedCards();
@@ -20,6 +22,14 @@ const CollectionPage = () => {
     const price = getCardPrice(card);
     return total + (price || 0);
   }, 0);
+
+  const handleSelectedCard = (card) => {
+    setSelectedCard(card);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedCard(null);
+  };
 
   return (
     <section className="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center justify-center gap-6 text-center">
@@ -43,15 +53,21 @@ const CollectionPage = () => {
             const price = getCardPrice(card);
             return (
               <article key={card.id} className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
-                <img src={card.images.small} alt={card.name} className="mx-auto rounded-xl" />
-                <h2 className="mt-4 text-xl font-bold text-zinc-100">{card.name}</h2>
-                <p className="mt-1 text-sm text-zinc-400">
-                  {card.rarity || 'Unknown Rarity'} - {card.supertype}
-                </p>
-                <p className="mt-1 text-sm text-zinc-500">
-                  #{card.number} / {card.set?.printedTotal}
-                </p>
-                <p className="mt-3 font-bold text-yellow-400">{formatUsdPrice(price)}</p>
+                <button
+                  type="button"
+                  onClick={() => handleSelectedCard(card)}
+                  className="aspect-63/88 overflow-hidden rounded-md border border-zinc-700 bg-zinc-950 transition hover:border-yellow-400 disabled:cursor-default disabled:opacity-40"
+                >
+                  <img src={card.images.small} alt={card.name} className="mx-auto rounded-xl" />
+                  <h2 className="mt-4 text-xl font-bold text-zinc-100">{card.name}</h2>
+                  <p className="mt-1 text-sm text-zinc-400">
+                    {card.rarity || 'Unknown Rarity'} - {card.supertype}
+                  </p>
+                  <p className="mt-1 text-sm text-zinc-500">
+                    #{card.number} / {card.set?.printedTotal}
+                  </p>
+                  <p className="mt-3 font-bold text-yellow-400">{formatUsdPrice(price)}</p>
+                </button>
                 <button
                   type="button"
                   onClick={() => handleRemoveCard(card.id)}
@@ -63,6 +79,14 @@ const CollectionPage = () => {
             );
           })}
         </div>
+      )}
+      {selectedCard && (
+        <CardModal
+          card={selectedCard}
+          onClose={handleCloseModal}
+          onSleeveCard={() => {}}
+          isSleeved={true}
+        />
       )}
     </section>
   );
