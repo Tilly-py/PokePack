@@ -76,6 +76,19 @@ const OpenPackPage = () => {
     setSelectedCard(null);
   };
 
+  const handleCardClick = () => {
+    if (!isCardRevealed) {
+      handleRevealCard();
+      return;
+    }
+
+    if (!isLastCard) {
+      handleNextCard();
+      return;
+    }
+    handleOpenPack();
+  };
+
   const currentCard = openedPack[currentCardIndex];
   const hasOpenedPack = openedPack.length > 0;
   const isLastCard = currentCardIndex === openedPack.length - 1;
@@ -132,7 +145,7 @@ const OpenPackPage = () => {
                     <CardBackReveal
                       key={`card-back-${currentCardIndex}`}
                       image={cardBackImage}
-                      onRevealCard={handleRevealCard}
+                      onRevealCard={handleCardClick}
                       cardIndex={currentCardIndex}
                       rarity={currentCard.rarity}
                     />
@@ -141,8 +154,8 @@ const OpenPackPage = () => {
                       key={`revealed-card-${currentCard.id}`}
                       card={currentCard}
                       isLastCard={isLastCard}
-                      onNextCard={handleNextCard}
-                      onOpenPack={handleOpenPack}
+                      onNextCard={handleCardClick}
+                      onOpenPack={handleCardClick}
                     />
                   )}
                 </AnimatePresence>

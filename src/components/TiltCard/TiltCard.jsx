@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-const TiltCard = ({ image = 'Poke Card' }) => {
+const TiltCard = ({ image, onClick, isClickable = true }) => {
   const cardRef = useRef(null);
   const [transform, setTransform] = useState('');
   const [glowPosition, setGlowPosition] = useState({
@@ -46,7 +46,9 @@ const TiltCard = ({ image = 'Poke Card' }) => {
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-10 flex items-center justify-center">
-      <div
+      <button
+        type="button"
+        onClick={isClickable ? onClick: undefined}
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -73,7 +75,7 @@ const TiltCard = ({ image = 'Poke Card' }) => {
             `,
           }}
         />
-      </div>
+      </button>
     </section>
   );
 };

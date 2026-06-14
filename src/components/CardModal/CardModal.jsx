@@ -1,5 +1,4 @@
 import { X } from 'lucide-react';
-import TiltCard from '../TiltCard/TiltCard';
 import { getCardPrice, formatUsdPrice } from '../../utils/cardPrice';
 
 const CardModal = ({ card, onClose, onSleeveCard, isSleeved }) => {
@@ -40,6 +39,11 @@ const CardModal = ({ card, onClose, onSleeveCard, isSleeved }) => {
               </p>
               <p className="mt-4 text-sm text-zinc-400">Market Price</p>
               <p className="mt-1 font-bold text-zinc-100">{formatUsdPrice(price)}</p>
+              {card.flavorText && (
+                <div className="mt-4 rounded-xl border border-zinc-800 bg-zinc-950/70 p-4">
+                  <p className="text-sm italic text-zinc-400"> "{card.flavorText}"</p>
+                </div>
+              )}
             </div>
             <button
               type="button"
