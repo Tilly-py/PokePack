@@ -54,7 +54,7 @@ const Navbar = () => {
                   }`
                 }
               >
-                <Icon size={16} />
+                <Icon className="h-6 w-6 sm:h-2 sm:w-2" />
                 <span className="hidden sm:inline">{link.label}</span>
               </NavLink>
             );
